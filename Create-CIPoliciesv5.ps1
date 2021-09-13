@@ -58,15 +58,6 @@ $RecommendedDriverBlockRules = "c:\temp\Microsoft-recommended-driver-block-rules
 $FileAdditional = "c:\temp\FileAdditional.xml"
 $Cipolicy = "c:\temp\AllowMicrosoft_DenyDrivers_and_Apps_Audit.xml"
 
-
-Write-Host ""
-Write-Host ""
-Write-Host " Edit the file $RecommendedDriverBlockRules and remove the lines 21 & 22" -ForegroundColor Yellow
-Write-Host '  <Allow ID="ID_ALLOW_ALL_1" FriendlyName="" FileName="*" /> '
-Write-Host '  <Allow ID="ID_ALLOW_ALL_2" FriendlyName="" FileName="*" /> '
-
-pause
-
 Merge-CIPolicy -PolicyPaths $RecommendedDriverBlockRules,$RecommendedBlockRules, $AllowMicrosoft,$FileAdditional  -OutputFilePath $Cipolicy
 
 Set-RuleOption -FilePath $cipolicy -Option 3
