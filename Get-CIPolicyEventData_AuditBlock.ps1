@@ -26,11 +26,11 @@ ForEach ($server in $servers) {
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  SignedLevelReq -Value $eventXML[4].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  SignedLevelVal -Value $eventXML[5].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  Process -Value $eventXML[3].'#text'
-	      Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  Status -Value $eventXML[6].'#text'
-	      Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  OriginalFileName -Value $eventXML[24].'#text'
+        Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  Status -Value $eventXML[6].'#text'
+        Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  OriginalFileName -Value $eventXML[24].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  InternalName -Value $eventXML[26].'#text'
-	      Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyName -Value $eventXML[18].'#text'
-	      Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyId -Value $eventXML[20].'#text'
+        Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyName -Value $eventXML[18].'#text'
+        Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyId -Value $eventXML[20].'#text'
 
     }
     write-host "Showing last 30 days events for 3076 & 3077 for server $server" -ForegroundColor Yellow

@@ -36,7 +36,7 @@ ForEach ($server in $servers) {
         $eventXML = ([xml]$Event.ToXml()).Event.EventData.Data
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyHash -Value $eventXML[8].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyNameBuffer -Value $eventXML[1].'#text'
-	      Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyIdBuffer -Value $eventXML[3].'#text'
+        Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  PolicyIdBuffer -Value $eventXML[3].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  TypeOfPolicy -Value $eventXML[4].'#text'
         Add-Member -InputObject $Event -MemberType NoteProperty -Force -Name  Status -Value $eventXML[5].'#text'
 
