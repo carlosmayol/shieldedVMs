@@ -25,14 +25,12 @@ Remove-PSSession -Session $session
 
 } #End srv loop
 
+# Dont use below, rather create a PDK and create/convert a SVM so the Owner does not become the guardians and the VM Owner Guardian is detached from the Local Guardian.
+
 <#
-Dont use below, rather create a PDK and convert the VM so the Owner does not become the guardians.
-# Then, to create a vTPM using these guardian:
-
-$kp = New-HgsKeyProtector -Owner (Get-HgsGuardian -CimSession -Name $servers[0] "$env:COMPUTERNAME Guardian (TPM)"), (Get-HgsGuardian -CimSession -Name $servers[0] "$env:COMPUTERNAME Guardian (TPM)") -AllowUntrustedRoot
-
+Then, to create a vTPM using these guardian:
+$kp = New-HgsKeyProtector -Owner (Get-HgsGuardian -CimSession -Name $servers[0] "$env:COMPUTERNAME Guardian (vTPM)"), (Get-HgsGuardian -CimSession -Name $servers[1] "$env:COMPUTERNAME Guardian (TPM)") -AllowUntrustedRoot
 Set-VMKeyProtector -VMName "YOURVMNAME" -KeyProtector $kp.RawData
-
 Enable-VMTPM -VMName "YOURVMNAME"
 #>
 
