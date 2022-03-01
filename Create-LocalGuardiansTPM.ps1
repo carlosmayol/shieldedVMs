@@ -15,12 +15,11 @@ Foreach ($srv in $servers) {
         $sigCert = New-SelfSignedCertificate -Subject "$env:COMPUTERNAME  Guardian (Signing)" -Provider "Microsoft Platform Crypto Provider" -KeyUsage DigitalSignature 
 
         $Guardian = New-HgsGuardian -Name "$env:COMPUTERNAME Guardian (vTPM)" -EncryptionCertificateThumbprint $encCert.Thumbprint -SigningCertificateThumbprint $sigCert.Thumbprint -AllowUntrustedRoot
+  
+        # certutil -store  "Shielded VM Local Certificates" # to check the provider associated to the certs
+               
+        # Export-HgsGuardian -InputObject $Guardian -Path  $exportpath
 
-        $exportpath = "c:\temp\"+"$env:COMPUTERNAME Guardian (vTPM).xml"
-
-        Export-HgsGuardian -InputObject $Guardian -Path  $exportpath
-
-        # Get-HgsGuardian | ? {$_.Name -match "vtpm"} | Export-HgsGuardian -Path "c:\temp\Guardian (vTPM).xml"
         }
 
 Remove-PSSession -Session $session
