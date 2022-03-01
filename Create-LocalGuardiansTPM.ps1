@@ -1,4 +1,6 @@
-﻿$servers = "lab6_ws2019_05" , "lab6_ws2019_06"
+#This script creates local guardian protected by TPM
+
+$servers = "lab6_ws2019_05" , "lab6_ws2019_06"
 
 Foreach ($srv in $servers) {
 
@@ -13,25 +15,36 @@ Foreach ($srv in $servers) {
         $sigCert = New-SelfSignedCertificate -Subject "$env:COMPUTERNAME  Guardian (Signing)" -Provider "Microsoft Platform Crypto Provider" -KeyUsage DigitalSignature 
 
         $Guardian = New-HgsGuardian -Name "$env:COMPUTERNAME Guardian (vTPM)" -EncryptionCertificateThumbprint $encCert.Thumbprint -SigningCertificateThumbprint $sigCert.Thumbprint -AllowUntrustedRoot
+  
+        # certutil -store  "Shielded VM Local Certificates" # to check the provider associated to the certs
+               
+        # Export-HgsGuardian -InputObject $Guardian -Path  $exportpath
 
-        $exportpath = "c:\temp\"+"$env:COMPUTERNAME Guardian (vTPM).xml"
-
-        Export-HgsGuardian -InputObject $Guardian -Path  $exportpath
-
-        # Get-HgsGuardian | ? {$_.Name -match "vtpm"} | Export-HgsGuardian -Path "c:\temp\Guardian (vTPM).xml"
         }
 
 Remove-PSSession -Session $session
 
 } #End srv loop
 
-# Dont use below, rather create a PDK and create/convert a SVM so the Owner does not become the guardians and the VM Owner Guardian is detached from the Local Guardian.
+# You can use instead of below, create a PDK and create/convert a VM using the PDK
 
 <#
-Then, to create a vTPM using these guardian:
-$kp = New-HgsKeyProtector -Owner (Get-HgsGuardian -CimSession -Name $servers[0] "$env:COMPUTERNAME Guardian (vTPM)"), (Get-HgsGuardian -CimSession -Name $servers[1] "$env:COMPUTERNAME Guardian (TPM)") -AllowUntrustedRoot
-Set-VMKeyProtector -VMName "YOURVMNAME" -KeyProtector $kp.RawData
-Enable-VMTPM -VMName "YOURVMNAME"
+
+# This below cannot be run remotely (needs double hope)
+
+# VM Hosted in NODE [0]
+
+$g1 = Get-HgsGuardian -CimSession  $servers[0] -Name "LAB6_WS2019_05 Guardian (vTPM)"
+$g2 = Get-HgsGuardian -CimSession  $servers[1] -Name "LAB6_WS2019_06 Guardian (vTPM)"
+
+$kp = New-HgsKeyProtector -Owner $g1 -Guardian $g2 -AllowUntrustedRoot 
+# 1 owner, always required. 0+ guardians optional 
+
+Set-VMKeyProtector -VMName "VMTEST" -KeyProtector $kp.RawData
+
+Enable-VMTPM -VMName "VMTEST"
 #>
+
+
 
 
