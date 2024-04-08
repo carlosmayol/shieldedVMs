@@ -63,10 +63,10 @@ foreach ($cert in $AllKpsCertificates) {
                 $certResult.Tests.KeyUsage = 'Skipped'
                 Write-Warning "$errprefix this seems to be a self-signed certificate, dont use it in production." 
             }
-                else {
-                    $certResult.Tests.KeyUsage = 'Failed'
-                    Write-Warning "$errprefix does not allow the DataEncipherment key usage."
-                }
+    else {
+        $certResult.Tests.KeyUsage = 'Failed'
+        Write-Warning "$errprefix does not allow the DataEncipherment key usage."
+    }
     }
     else {
         if ($cert.Certificate.Extensions['2.5.29.15'].KeyUsages.HasFlag([System.Security.Cryptography.X509Certificates.X509KeyUsageFlags]::DigitalSignature)) {
